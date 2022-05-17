@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>krdg</title>
+        <!-- Noto Sans -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+
+        <!-- Font Awesome5 -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+
+        <!-- Normalize.css -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+        <!-- Bootstrap.css -->
+        <link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
+
+        <!-- swiper-bundle -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+        <!-- Jquery, Popper, Bootstrap -->
+        <script src="//unpkg.com/jquery@3/dist/jquery.min.js"></script>
+        <script src="//unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
+        <script src="//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js"></script>
+
+        <!-- Moment, ko -->
+        <script src="//unpkg.com/moment@2.24.0/min/moment.min.js"></script>
+        <script src="//unpkg.com/moment@2.24.0/locale/ko.js"></script>
+
+        <!-- Fetch -->
+        <script src="//unpkg.com/promise-polyfill"></script>
+        <script src="//unpkg.com/whatwg-fetch"></script>
+
+        <!-- Underscore -->
+        <script src="//unpkg.com/underscore"></script>
+
+        <!-- Vue 2 -->
+        <script src="//unpkg.com/vue@2.5.16/dist/vue.min.js"></script>
+
+        <!-- Sweetalert -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+        <!-- FileSaver -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+
+        <!-- vue-carousel -->
+        <script src="https://cdn.jsdelivr.net/npm/vue-carousel@0.18.0/dist/vue-carousel.min.js"></script>
+
+        <!-- swiper -->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+        <script src="./app.js"></script>
+
+        <link rel="stylesheet" href="./index.css" />
+
+    </head>
+    <body>
+
+        <div id="app">
+            <div class="header"></div>
+        
+            <div class="contents">
+                <div class="left-wrap">
+                    <img v-for="model in models" class="avatar-image" :src="getModelUrl(model)" v-on:click="onModel(model)">
+                </div>
+                <div class="main-wrap">
+                    <div class="main-image-wrap">
+                        <img v-show="model" class="main-image" :src="getAvatar(model, texture)">
+                    </div>
+                    <div class="main-bottom-bar">
+                        <div class="swiper mySwiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" v-for="texture in textures">
+                                    <img :src="getTextureUrl(texture)" v-on:click="onTexture(texture)">
+                                </div>                                
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-wrap">
+                    <div class="info-wrap">
+                        <label> Design information </label>
+                        <div class="info-desc-wrap">
+                            <br/>
+                            <label>53x64cm / 200dpi / JPG</label>
+                            <br/>
+                        </div>
+                    </div>
+        
+                    <div class="info-wrap">
+                        <label> Zoom information </label>
+                        <div class="info-zoom-wrap">
+                            <i class="icon-plus" v-on:click="onPlusZoom"></i>
+                            <i class="icon-minus" v-on:click="onMinusZoom"></i>
+                        </div>
+                    </div>
+
+                    <div class="info-wrap">
+                        <img class="icon-video" src="./static/video-icon.png" v-on:click="onVisibleVideoModal" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-wrappr" v-show="isLoading">
+                <img class="loading-icon" src="./static/loading-icon.gif" />
+            </div>            
+
+            <div v-show="isVideoModal" class="modal-video-wrapper" v-on:click.self="onHideVideoModal" >
+
+                <div class="modal-video">
+
+                    <img class="icon-cancel" src="./static/cancel-icon.png" v-on:click="onHideVideoModal" />
+
+                    <div class="modal-video-iframe">
+                        <iframe width="560" height="315" :src="getVideoUrl(texture)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+
+            Vue.use(VueCarousel)
+
+            var app = new Vue(CardComponent('#app'))
+            app.getModels()
+            app.getTextures()
+
+        </script>
+    </body>
+</html>
